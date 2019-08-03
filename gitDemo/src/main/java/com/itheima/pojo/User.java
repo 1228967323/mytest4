@@ -5,6 +5,6 @@ package com.itheima.pojo;
  * @create 2019/8/3 9:24
  */
 public class User {
-    private String username ; //ÓÃ»§Ãû
-    private String password ; //ÃÜÂë
+    private String username ; //ç”¨æˆ·å
+    private String password ; //å¯†ç 
 }
