@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--引入外部配置文件-->
+    <properties resource="jdbc.properties"></properties>
+    <!--别名配置-->
+    <typeAliases>
+        <!--单个别名定义-->
+        <typeAlias alias="user" type="com.itheima.domain.User"/>
+        <!--<typeAlias alias="" type="com.itheima.domain.QueryVo"/>-->
+        <!--批量别名定义,扫描整个包下的类,别名为类名-->
+        <package name="com.itheima.domain"/>
+    </typeAliases>
+    <!--数据源-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--加载映射文件-->
+    <mappers>
+        <!--子标签mapper标签可以加载单个映射配置文件-->
+        <!--<mapper resource="com/itheima/dao/IUserDao.xml"/>-->
+        <!--子标签package标签可以统一加载某个包中的所有映射配置文件-->
+        <package name="com.itheima.dao"/>
+    </mappers>
+</configuration>

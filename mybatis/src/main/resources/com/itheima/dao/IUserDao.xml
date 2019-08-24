@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--根标签:mapper,他的namespace属性值为对应的接口的权限定名-->
+<mapper namespace="com.itheima.dao.IUserDao">
+    <!--findAll-->
+    <select id="findAll" resultType="user">
+        select *from user
+    </select>
+    <insert id="addUser" parameterType="user">
+        insert into user values (#{id},#{username},#{gender},#{birthday},#{address});
+    </insert>
+    <delete id="deleteUser" parameterType="int">
+        delete from user where id=${value}
+    </delete>
+    <update id="updateUser" parameterType="com.itheima.domain.User">
+        update user set username='${username}' where id=${id}
+    </update>
+    <!--如果参数类型是Map,则传递的参数名要对应其map中的kay值-->
+    <update id="updateUserByMap" parameterType="map">
+        update user set username='${name}' where id=${uid}
+    </update>
+    <select id="findUser" parameterType="int" resultType="com.itheima.domain.User">
+        select *from user where id=#{abc}
+    </select>
+    <select id="findUserById" parameterType="int" resultType="map">
+        select *from user where id=#{id}
+    </select>
+    <select id="findUsernameById" parameterType="int" resultType="string">
+        select username from user where id=#{id}
+    </select>
+    <select id="findAllUserCount"  resultType="long">
+        select count(*) from user
+    </select>
+    <!--对于模糊查询 1. #{username},这种方式要添加"%"只可以在传入的参数中添加-->
+    <!--<select id="findUserByUsername" parameterType="string"  resultType="com.itheima.domain.User">-->
+        <!--select * from user where username like #{value}-->
+    <!--</select>-->
+    <!--对于模糊查询  2. '${value}',这种方式可以在'%${value}%'添加-->
+    <select id="findUserByUsername" parameterType="string"  resultType="com.itheima.domain.User">
+        select * from user where username like '%${value}%'
+    </select>
+
+    <select id="findUserByQueryVo" parameterType="com.itheima.domain.QueryVo"  resultType="com.itheima.domain.User">
+        select * from user where username =#{user.username}
+    </select>
+    <!--方式一:对查询出来的字段取别名;使其可以封装不同字段的对象-->
+    <!--<select id="findUserByUserInfoId" parameterType="int"  resultType="com.itheima.domain.UserInfo">-->
+        <!--select id uid,username username,gender sex,birthday uBirthday,address uAddress from user where id=#{id}-->
+    <!--</select>-->
+    <!--第二种方式: 通过resultMap自定义映射规则:将结果集的字段和JavaBean的属性进行一一映射
+			<resultMap id="唯一标识" type="要进行映射的JavaBean的全限定名">
+				<id column="结果集中的字段名" property="JavaBean中的属性名"/>映射主键字段
+				<result column="结果集中的字段名" property="JavaBean中的属性名"/>映射非主键
+			</resultMap>
+
+			select标签中就不指定resultType了，而使用resultMap属性，引用定义好的resultMap的id-->
+    <select id="findUserByUserInfoId" parameterType="int" resultMap="UserInfo">
+        select *from user where id=#{idd}
+    </select>
+    <resultMap id="UserInfo" type="com.itheima.domain.UserInfo">
+        <id column="id" property="uid"/>
+        <result column="username" property="username"/>
+        <result column="gender" property="sex"/>
+        <result column="birthday" property="uBirthday"/>
+        <result column="address" property="uAddress"/>
+    </resultMap>
+</mapper>
